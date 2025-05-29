@@ -3,7 +3,7 @@
     local_certs # enables local certificate generation
     servers {
         listener_wrappers {
-            http_redirect {
+            http_redirect
         }
     }
 }
