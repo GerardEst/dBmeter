@@ -10,6 +10,8 @@ import re
 import asyncio
 import time
 import logging
+import ssl
+import os
 from aiortc import RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, RTCConfiguration, RTCIceServer
 from aiortc.contrib.media import MediaRelay
 
@@ -24,7 +26,22 @@ app.mount("/observer", StaticFiles(directory="public", html=True), name="static"
 
 @app.get("/")
 def read_root():
-    return {"message": "DBMeter WebRTC Server Ready!"}
+    return {"message": "DBMeter WebRTC Server Ready!", "https_enabled": check_ssl_files()}
+
+def check_ssl_files():
+    """Check if SSL certificate files exist"""
+    return os.path.exists("server.crt") and os.path.exists("server.key")
+
+@app.get("/ssl-status")
+def ssl_status():
+    """Check SSL status"""
+    has_ssl = check_ssl_files()
+    return {
+        "ssl_enabled": has_ssl,
+        "certificate_exists": os.path.exists("server.crt"),
+        "key_exists": os.path.exists("server.key"),
+        "message": "HTTPS ready" if has_ssl else "Generate SSL certificate first"
+    }
 
 @app.get("/app")
 def redirect_to_app():
