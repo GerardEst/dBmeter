@@ -3,29 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reconeixement de Números - DBMeter</title>
+    <title>Sensor-meter</title>
     <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="main.js"></script>
   </head>
   <body>
     <div class="container">
-      <h1>dB Meter</h1>
-
+      <div class="header">
+        <p>Point the camera to the numbers of the sensor</p>
+        <div class="controls">
+          <button id="startCamera">Start</button>
+          <button id="stopCamera" disabled>Stop</button>
+        </div>
+      </div>
       <div class="camera-container">
         <video id="video" autoplay playsinline muted></video>
       </div>
 
-      <div class="controls">
-        <button id="startCamera">Iniciar Càmera</button>
-        <button id="stopCamera" disabled>Aturar Càmera</button>
-        <button id="toggleROI">Desactivar ROI</button>
-      </div>
-
       <div class="results">
-        <h3>Números Detectats:</h3>
-        <div id="detectedNumbers">...</div>
+        <div id="detectedNumbers"></div>
+        <button id="toggleROI">Toggle ROI</button>
       </div>
     </div>
-
-    <script type="module" src="main.js"></script>
   </body>
 </html>

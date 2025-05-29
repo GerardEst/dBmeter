@@ -23,9 +23,6 @@ export class NumberDetector {
 
   toggleROI() {
     this.roiEnabled = !this.roiEnabled;
-    this.toggleROIBtn.textContent = this.roiEnabled
-      ? 'Desactivar ROI'
-      : 'Activar ROI';
 
     // Send ROI preference to server
     if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
@@ -37,20 +34,7 @@ export class NumberDetector {
       );
     }
 
-    // Update visual ROI overlay
     this.updateROIOverlay();
-
-    this.results.innerHTML = `
-      <div style="color: #666;">
-        ${
-          this.roiEnabled
-            ? 'ROI activat - Server procesarà àrea central'
-            : 'ROI desactivat - Server procesarà imatge completa'
-        }
-      </div>
-    `;
-
-    console.log('ROI toggled:', this.roiEnabled ? 'ON' : 'OFF');
   }
 
   updateROIOverlay() {
@@ -153,7 +137,7 @@ export class NumberDetector {
 
       this.websocket.onopen = () => {
         console.log('WebRTC signaling connected');
-        this.results.textContent = 'Connectat al servidor WebRTC';
+        this.results.textContent = 'WebRTC signaling connected';
       };
 
       this.websocket.onmessage = async event => {
@@ -178,7 +162,8 @@ export class NumberDetector {
 
       this.websocket.onclose = () => {
         console.log('WebRTC signaling disconnected, reconnecting...');
-        this.results.textContent = 'Reconnectant...';
+        this.results.textContent =
+          'WebRTC signaling disconnected, reconnecting in 3sec';
         setTimeout(() => {
           this.initializeWebSocket();
         }, 3000);
@@ -186,7 +171,7 @@ export class NumberDetector {
 
       this.websocket.onerror = error => {
         console.error('WebRTC signaling error:', error);
-        this.results.textContent = 'Error de connexió WebRTC';
+        this.results.textContent = 'WebRTC signaling error';
       };
     } catch (error) {
       console.error('Error initializing WebRTC signaling:', error);
@@ -310,7 +295,7 @@ export class NumberDetector {
     }
 
     if (state !== 'connected') {
-      this.results.innerHTML = `<div style="color: #666;">${statusMessage}</div>`;
+      this.results.textContent = statusMessage;
     }
   }
 
@@ -361,32 +346,11 @@ export class NumberDetector {
     this.stopBtn.disabled = true;
   }
 
-  displayNumbers(numbers, frameCount) {
-    const debugInfo = frameCount ? ` (Frame #${frameCount})` : '';
-
+  displayNumbers(numbers) {
     if (numbers && numbers.length > 0) {
-      this.results.innerHTML = `
-        <div style="margin-bottom: 10px;">
-          <strong>Números detectats pel servidor${debugInfo}:</strong>
-        </div>
-        ${numbers
-          .map(
-            num =>
-              `<span style="margin-right: 15px; padding: 5px 10px; background: #e7f3ff; border-radius: 5px; font-weight: bold;">${num}</span>`
-          )
-          .join('')}
-      `;
+      this.results.textContent = numbers.join(' ');
     } else {
-      // Show when frames are being processed but no numbers found
-      this.results.innerHTML = `
-        <div style="color: #666;">
-          Servidor processant video stream${debugInfo}...<br>
-          <small>${
-            this.roiEnabled ? 'Mode ROI activat' : 'Mode imatge completa'
-          }</small><br>
-          <small style="color: #999;">Cap número detectat en aquest frame</small>
-        </div>
-      `;
+      this.results.textContent = 'No num detected';
     }
   }
 }
