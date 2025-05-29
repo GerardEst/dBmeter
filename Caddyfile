@@ -1,19 +1,10 @@
 {
     # https://caddyserver.com/docs/caddyfile/options#local-certs
     local_certs # enables local certificate generation
-    servers {
-        listener_wrappers {
-            http_redirect
-        }
-    }
 }
 
-:8080 {
+# https://carlo.vercel.app/blog/how-to-setup-local-https-development-with-caddy
+192.168.1.202, localhost {
     reverse_proxy localhost:8000
-    tls internal # generates local certificate
-}
-
-# Quan fem servir ports no estandar, caddy no els rebota i per tant hem de fer-ho nosaltres
-http://:8080 {
-    redir https://{host}{uri} permanent
+    tls internal
 }
