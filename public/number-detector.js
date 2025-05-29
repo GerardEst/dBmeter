@@ -201,6 +201,7 @@ export class NumberDetector {
           width: { ideal: 1280 },
           height: { ideal: 720 },
           frameRate: { ideal: 30 },
+          facingMode: 'environment',
         },
       });
 
