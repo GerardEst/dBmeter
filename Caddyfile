@@ -3,7 +3,7 @@
     local_certs # enables local certificate generation
     servers {
         listener_wrappers {
-            http_redirect
+            http_redirect {
         }
     }
 }
@@ -11,4 +11,9 @@
 :8080 {
     reverse_proxy localhost:8000
     tls internal # generates local certificate
+}
+
+# Quan fem servir ports no estandar, caddy no els rebota i per tant hem de fer-ho nosaltres
+http://:8080 {
+    redir https://{host}{uri} permanent
 }
