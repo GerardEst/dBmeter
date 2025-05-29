@@ -1,31 +1,9 @@
-
-:8080 {
-    reverse_proxy localhost:8000 {
-        header_up Host {host}
-        header_up X-Real-IP {remote_host}
-    }
+{
+    # https://caddyserver.com/docs/caddyfile/options#local-certs
+    local_certs # enables local certificate generation
 }
 
-# yourapp.yourdomain.com {
-#     reverse_proxy localhost:8000
-    
-#     header {
-#         Strict-Transport-Security max-age=31536000;
-#         X-Frame-Options DENY
-#         X-Content-Type-Options nosniff
-#     }
-    
-#     encode gzip
-
-#     log {
-#         output file access.log
-#     }
-# }
-
-# Alternative configuration for development with self-signed certs
-# yourapp.yourdomain.com {
-#     reverse_proxy localhost:8000
-#     
-#     # Use self-signed certificate
-#     tls internal
-# }
+:8080 {
+    reverse_proxy localhost:8000
+    tls internal # generates local certificate
+}
