@@ -161,7 +161,7 @@ class WebRTCProcessor:
         self.relay = MediaRelay()
         self.roi_enabled = True
         self.last_detection_time = 0
-        self.detection_interval = 0.2  # Process every 500ms
+        self.detection_interval = 0.5  # Process every 500ms
         self.processing = False
         
     async def process_video_track(self, track):
