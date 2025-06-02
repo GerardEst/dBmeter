@@ -1,4 +1,4 @@
-# dBMeter
+# realtime-ocr-analyze
 
 Registra contadores, medidores o cualquier número que cambie regularmente a lo largo del tiempo.
 
